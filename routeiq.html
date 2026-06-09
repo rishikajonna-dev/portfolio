@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RouteIQ — Rishika Jonna</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D1262A;
+  --black: #0d0d0d;
+  --gray: #6b7280;
+  --gray-light: #f4f4f2;
+  --border: #e5e5e5;
+  --white: #ffffff;
+  --risk-high: #ef4444;
+  --risk-elevated: #f59e0b;
+  --risk-normal: #16a34a;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); font-size: 15px; line-height: 1.6; }
+
+/* ── NAV ── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px; position: sticky; top: 0;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+  z-index: 100; border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--black); letter-spacing: -0.5px; text-decoration: none; }
+.nav-back { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.nav-back:hover { color: var(--black); }
+.nav-back svg { width: 14px; height: 14px; }
+
+/* ── HERO ── */
+.case-hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: 72px 48px 56px;
+  display: grid; grid-template-columns: 1fr 360px; gap: 64px; align-items: start;
+}
+.case-hero-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--gray); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.case-hero-eyebrow span { color: var(--red); }
+.case-hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(44px, 6vw, 72px); font-weight: 400;
+  line-height: 1.05; letter-spacing: -2px; margin-bottom: 8px;
+}
+.hero-divider { width: 40px; height: 3px; background: var(--red); margin: 20px 0 24px; }
+.case-hero-insight {
+  font-size: 18px; color: var(--red); font-style: italic;
+  font-weight: 500; line-height: 1.5; margin-bottom: 20px; max-width: 440px;
+}
+.case-hero-desc { color: var(--gray); font-size: 15px; line-height: 1.75; max-width: 440px; margin-bottom: 32px; }
+
+.meta-grid { display: flex; flex-direction: column; gap: 0; }
+.meta-row {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 16px 0; border-top: 1px solid var(--border);
+}
+.meta-row:last-child { border-bottom: 1px solid var(--border); }
+.meta-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); }
+.meta-value { font-size: 14px; font-weight: 500; color: var(--black); }
+.pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.pill { background: var(--gray-light); color: #444; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+
+/* ── SECTION SCAFFOLD ── */
+.case-section {
+  max-width: 1100px; margin: 0 auto; padding: 56px 48px;
+  border-top: 1px solid var(--border);
+}
+.section-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--gray); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif; font-size: 34px;
+  font-weight: 400; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 20px;
+}
+.section-body { color: var(--gray); font-size: 15px; line-height: 1.8; max-width: 640px; }
+.section-body p { margin-bottom: 16px; }
+.section-body p:last-child { margin-bottom: 0; }
+
+/* ── QUESTION BLOCK ── */
+.question-block {
+  background: var(--gray-light); border-radius: 12px; padding: 28px 32px;
+  border-left: 3px solid var(--red); margin: 32px 0;
+}
+.question-block .q-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
+.question-block .q-text { font-family: 'DM Serif Display', serif; font-size: 22px; font-style: italic; color: var(--black); line-height: 1.4; }
+
+/* ── TWO-COL LAYOUT ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; align-items: start; }
+.two-col-wide { display: grid; grid-template-columns: 2fr 3fr; gap: 56px; margin-top: 40px; align-items: start; }
+
+/* ── PATTERN CARDS ── */
+.pattern-list { display: flex; flex-direction: column; gap: 0; margin-top: 32px; }
+.pattern-item {
+  display: grid; grid-template-columns: 48px 1fr; gap: 20px;
+  padding: 20px 0; border-top: 1px solid var(--border); align-items: start;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.pattern-item.visible { opacity: 1; transform: translateY(0); }
+.pattern-num {
+  font-family: 'DM Serif Display', serif; font-size: 32px;
+  color: #e0e0e0; line-height: 1; letter-spacing: -1px; padding-top: 2px;
+}
+.pattern-title { font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 6px; line-height: 1.3; }
+.pattern-body { font-size: 14px; color: var(--gray); line-height: 1.65; }
+.pattern-highlight { color: var(--red); font-style: italic; font-weight: 500; }
+
+/* ── COST CHAIN ── */
+.cost-chain { margin: 32px 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+.chain-item {
+  display: flex; align-items: center; gap: 16px;
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.chain-item.visible { opacity: 1; transform: translateX(0); }
+.chain-node {
+  width: 200px; padding: 12px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; background: var(--gray-light);
+  border: 1px solid var(--border); color: var(--black);
+}
+.chain-node.trigger { background: #fff3cd; border-color: #f59e0b; color: #92400e; }
+.chain-node.outcome { background: #fef2f2; border-color: var(--red); color: var(--red); }
+.chain-arrow { display: flex; flex-direction: column; align-items: center; padding: 4px 0 4px 16px; }
+.chain-arrow svg { display: block; }
+
+/* ── DECISION CARDS ── */
+.decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.decision-card {
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.decision-card.visible { opacity: 1; transform: translateY(0); }
+.decision-num { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
+.decision-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; }
+.decision-insight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
+.decision-insight { font-size: 13px; color: var(--gray); margin-bottom: 14px; line-height: 1.6; }
+.decision-result { font-size: 13px; color: var(--black); font-weight: 500; padding: 10px 14px; background: var(--gray-light); border-radius: 8px; line-height: 1.5; }
+
+/* ── DEMO EMBED ── */
+.demo-section {
+  background: var(--black); padding: 72px 0 64px;
+}
+.demo-inner { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.demo-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+.demo-title { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--white); font-weight: 400; letter-spacing: -0.5px; margin-bottom: 10px; }
+.demo-sub { font-size: 14px; color: rgba(255,255,255,0.45); margin-bottom: 40px; max-width: 520px; line-height: 1.7; }
+
+/* Browser chrome wrapper */
+.browser-wrap {
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+}
+.browser-bar {
+  background: #1e2128; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dot { width: 12px; height: 12px; border-radius: 50%; }
+.browser-url {
+  flex: 1; background: #2a2d35; border-radius: 6px;
+  padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4);
+  font-family: monospace; letter-spacing: 0.3px;
+}
+.browser-frame {
+  width: 100%; height: 600px; border: none; display: block;
+  background: #f0f2f5;
+}
+
+/* ── REFLECTION ── */
+.reflection-section {
+  background: var(--gray-light); padding: 72px 0;
+}
+.reflection-inner { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.reflection-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 40px; }
+.reflection-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  padding: 28px 24px;
+}
+.reflection-title { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+.reflection-body { font-size: 13px; color: var(--gray); line-height: 1.65; }
+
+/* ── NAV FOOTER ── */
+.case-footer {
+  border-top: 1px solid var(--border); padding: 40px 48px;
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-back { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.footer-back:hover { color: var(--black); }
+.footer-next { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--gray); text-decoration: none; transition: color 0.2s; text-align: right; }
+.footer-next:hover { color: var(--black); }
+.footer-next-label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray); margin-bottom: 2px; }
+.footer-next-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--black); }
+
+/* ── RESEARCH GOAL LIST ── */
+.goal-list { margin: 24px 0; display: flex; flex-direction: column; gap: 12px; }
+.goal-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; color: var(--gray); line-height: 1.5;
+}
+.goal-num {
+  font-family: 'DM Serif Display', serif; font-size: 18px;
+  color: var(--red); line-height: 1; flex-shrink: 0; padding-top: 1px;
+}
+
+/* ── BEFORE / AFTER ── */
+.before-after {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0;
+}
+.ba-card { border-radius: 12px; padding: 24px; }
+.ba-before { background: #fef2f2; border: 1px solid #fecaca; }
+.ba-after { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.ba-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.ba-before .ba-label { color: #b91c1c; }
+.ba-after .ba-label { color: #15803d; }
+.ba-text { font-family: 'DM Serif Display', serif; font-size: 18px; font-style: italic; line-height: 1.4; }
+.ba-before .ba-text { color: #7f1d1d; }
+.ba-after .ba-text { color: #14532d; }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .case-hero { grid-template-columns: 1fr; padding: 32px 20px 40px; gap: 40px; }
+  .case-section { padding: 40px 20px; }
+  .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 32px; }
+  .decision-grid { grid-template-columns: 1fr; }
+  .reflection-grid { grid-template-columns: 1fr; }
+  .demo-inner { padding: 0 20px; }
+  .browser-frame { height: 420px; }
+  .case-footer { padding: 32px 20px; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .before-after { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">RJ</a>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+    All projects
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="case-hero">
+  <div>
+    <div class="case-hero-eyebrow">
+      <span>01</span> Transportation · B2B SaaS
+    </div>
+    <h1>RouteIQ</h1>
+    <div class="hero-divider"></div>
+    <p class="case-hero-insight">Operators weren't struggling with delays. They were struggling with uncertainty.</p>
+    <p class="case-hero-desc">I started this project assuming traffic delays were the core problem. Eight interviews later, it became clear that delays were only the symptom. The real cost was uncertainty — and operators had been silently absorbing it for years.</p>
+  </div>
+  <div class="meta-grid">
+    <div class="meta-row">
+      <div class="meta-label">Domain</div>
+      <div class="meta-value">Transport operations · B2B SaaS</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-label">Research</div>
+      <div class="meta-value">8 semi-structured interviews · Hyderabad & Bangalore</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-label">Output</div>
+      <div class="meta-value">Problem reframe, PRD, live proof of concept</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-label">Methods</div>
+      <div class="pill-row">
+        <span class="pill">User Interviews</span>
+        <span class="pill">Problem Reframe</span>
+        <span class="pill">PRD</span>
+        <span class="pill">Live POC</span>
+        <span class="pill">Secondary Research</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE QUESTION -->
+<div class="case-section">
+  <div class="section-eyebrow">Starting Point</div>
+  <div class="section-title">The question that opened everything</div>
+  <div class="question-block">
+    <div class="q-label">The question</div>
+    <div class="q-text">Why do transport operators consistently add 30–45 minutes of buffer to every trip?</div>
+  </div>
+  <div class="section-body">
+    <p>It seemed like a simple operational inefficiency. Add less buffer, recover the lost time, improve service. But the more operators I spoke to, the clearer it became that the buffer wasn't irrational — it was load-bearing. It was the only reliable tool they had.</p>
+    <p>The right question wasn't "how do we reduce buffer?" It was "why does buffer exist at all?"</p>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<div class="case-section">
+  <div class="two-col-wide">
+    <div>
+      <div class="section-eyebrow">User Research</div>
+      <div class="section-title">Starting with the user</div>
+      <div class="section-body">
+        <p>Before exploring solutions, I wanted to understand how transport operators actually plan their day. What tools did they trust? How did they make dispatch decisions? And why were large schedule buffers considered normal practice?</p>
+        <p>I conducted eight semi-structured interviews across Hyderabad and Bangalore. Each ran 30–40 minutes, focused on planning workflows, dispatch decisions, routing tools, and operational pain.</p>
+        <p>Beyond direct answers, I paid close attention to contradictions, workarounds, and repeated behaviours. When users consistently create their own solutions to a problem, those workarounds reveal more than the complaints themselves.</p>
+      </div>
+    </div>
+    <div>
+      <div style="font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 16px;">Research goals</div>
+      <div class="goal-list">
+        <div class="goal-item">
+          <div class="goal-num">1</div>
+          <div>Is operational buffering widespread behaviour or an isolated workaround?</div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-num">2</div>
+          <div>Do operators see traffic uncertainty as a problem worth solving?</div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-num">3</div>
+          <div>Where does Google Maps stop being useful for planning decisions?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PATTERNS -->
+<div class="case-section">
+  <div class="section-eyebrow">Research Synthesis</div>
+  <div class="section-title">Five patterns, one through-line</div>
+  <div class="section-body">
+    <p>Individual workflows varied, but the same operational behaviours appeared repeatedly across all eight interviews.</p>
+  </div>
+  <div class="pattern-list">
+    <div class="pattern-item">
+      <div class="pattern-num">1</div>
+      <div>
+        <div class="pattern-title">Google Maps is used by everyone</div>
+        <div class="pattern-body">Every operator relied on Google Maps in some capacity. It was the default tool — familiar, accessible, always on.</div>
+      </div>
+    </div>
+    <div class="pattern-item">
+      <div class="pattern-num">2</div>
+      <div>
+        <div class="pattern-title">Google Maps is trusted by no one</div>
+        <div class="pattern-body">Despite universal adoption, operators consistently described it as insufficient for planning tomorrow's operations. <span class="pattern-highlight">It helped them navigate. It did not help them plan.</span></div>
+      </div>
+    </div>
+    <div class="pattern-item">
+      <div class="pattern-num">3</div>
+      <div>
+        <div class="pattern-title">Buffering is the default strategy</div>
+        <div class="pattern-body">Every operator added manual buffer to compensate for uncertainty. The most common range: <span class="pattern-highlight">30 to 45 minutes per trip</span>. Not per week. Per trip.</div>
+      </div>
+    </div>
+    <div class="pattern-item">
+      <div class="pattern-num">4</div>
+      <div>
+        <div class="pattern-title">Experience has become infrastructure</div>
+        <div class="pattern-body">Critical operational knowledge lived inside experienced planners rather than inside systems. Years of accumulated intuition were compensating for missing tools.</div>
+      </div>
+    </div>
+    <div class="pattern-item">
+      <div class="pattern-num">5</div>
+      <div>
+        <div class="pattern-title">Revenue is being left on the table</div>
+        <div class="pattern-body">One operator described actively <span class="pattern-highlight">declining bookings during peak traffic periods</span> because arrival times couldn't be predicted confidently. This transformed the problem from an operational inconvenience into a measurable business cost.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM REFRAME -->
+<div class="case-section">
+  <div class="two-col">
+    <div>
+      <div class="section-eyebrow">Problem Redefinition</div>
+      <div class="section-title">The assumption vs. what the research revealed</div>
+      <div class="before-after">
+        <div class="ba-card ba-before">
+          <div class="ba-label">What I assumed</div>
+          <div class="ba-text">Operators struggle with delays.</div>
+        </div>
+        <div class="ba-card ba-after">
+          <div class="ba-label">What research revealed</div>
+          <div class="ba-text">Operators are managing future uncertainty with present-tense tools.</div>
+        </div>
+      </div>
+      <div class="section-body" style="margin-top: 16px;">
+        <p>Operators had already adapted to delays. The delays themselves weren't what drove decision-making. The inability to predict them was.</p>
+      </div>
+    </div>
+    <div>
+      <div style="font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 16px;">The hidden cost of uncertainty</div>
+      <div class="cost-chain">
+        <div class="chain-item">
+          <div class="chain-node trigger">Uncertainty about tomorrow's routes</div>
+        </div>
+        <div class="chain-arrow">
+          <svg width="2" height="20" viewBox="0 0 2 20"><line x1="1" y1="0" x2="1" y2="16" stroke="#d1d5db" stroke-width="1.5"/><polygon points="-1,13 1,20 3,13" fill="#d1d5db"/></svg>
+        </div>
+        <div class="chain-item">
+          <div class="chain-node">Large manual buffers added</div>
+        </div>
+        <div class="chain-arrow">
+          <svg width="2" height="20" viewBox="0 0 2 20"><line x1="1" y1="0" x2="1" y2="16" stroke="#d1d5db" stroke-width="1.5"/><polygon points="-1,13 1,20 3,13" fill="#d1d5db"/></svg>
+        </div>
+        <div class="chain-item">
+          <div class="chain-node">Idle vehicles & wasted capacity</div>
+        </div>
+        <div class="chain-arrow">
+          <svg width="2" height="20" viewBox="0 0 2 20"><line x1="1" y1="0" x2="1" y2="16" stroke="#d1d5db" stroke-width="1.5"/><polygon points="-1,13 1,20 3,13" fill="#d1d5db"/></svg>
+        </div>
+        <div class="chain-item">
+          <div class="chain-node">Additional labour cost</div>
+        </div>
+        <div class="chain-arrow">
+          <svg width="2" height="20" viewBox="0 0 2 20"><line x1="1" y1="0" x2="1" y2="16" stroke="#d1d5db" stroke-width="1.5"/><polygon points="-1,13 1,20 3,13" fill="#d1d5db"/></svg>
+        </div>
+        <div class="chain-item">
+          <div class="chain-node outcome">Bookings declined → lost revenue</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; font-size: 13px; color: var(--gray); font-style: italic; line-height: 1.6;">The opportunity wasn't reducing delays. It was making uncertainty measurable.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT STRATEGY -->
+<div class="case-section">
+  <div class="section-eyebrow">Product Strategy</div>
+  <div class="section-title">What the gap revealed</div>
+  <div class="section-body">
+    <p>Google Maps answered: <em>What is happening right now?</em><br>Operators needed: <em>What is likely to happen tomorrow?</em></p>
+    <p>Rather than competing with routing platforms, the product would focus on a different layer entirely — not navigation, not dispatch management, not fleet tracking.</p>
+  </div>
+  <div class="question-block" style="margin-top: 28px;">
+    <div class="q-label">Product thesis</div>
+    <div class="q-text">If operators can understand tomorrow's route reliability before dispatch decisions are made, they can replace large fixed buffers with smaller, data-informed ones.</div>
+  </div>
+</div>
+
+<!-- PRODUCT DECISIONS -->
+<div class="case-section">
+  <div class="section-eyebrow">From Research to Product</div>
+  <div class="section-title">Four decisions, each earned</div>
+  <div class="section-body">
+    <p>Every feature in the product exists because of something discovered during research. Nothing was designed in a vacuum.</p>
+  </div>
+  <div class="decision-grid">
+    <div class="decision-card">
+      <div class="decision-num">Decision 01</div>
+      <div class="decision-title">Route Reliability Score</div>
+      <div class="decision-insight-label">Research insight</div>
+      <div class="decision-insight">Operators consistently referenced recurring disruption patterns — rain, Fridays, construction, public events. They think in terms of risk, not raw traffic data.</div>
+      <div class="decision-result">→ A score classifying tomorrow's routes as Normal, Elevated, or High Risk.</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-num">Decision 02</div>
+      <div class="decision-title">Departure Recommendations</div>
+      <div class="decision-insight-label">Research insight</div>
+      <div class="decision-insight">Operators ultimately care about one question: when should I dispatch? Providing data without a recommendation would create more work, not less.</div>
+      <div class="decision-result">→ Convert route risk directly into a specific departure time.</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-num">Decision 03</div>
+      <div class="decision-title">WhatsApp Alerts</div>
+      <div class="decision-insight-label">Research insight</div>
+      <div class="decision-insight">Every operator coordinated through WhatsApp and phone calls. Building a separate app would create an adoption barrier where there didn't need to be one.</div>
+      <div class="decision-result">→ Deliver high-risk route alerts directly through WhatsApp.</div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-num">Decision 04</div>
+      <div class="decision-title">Weekly Route Scorecard</div>
+      <div class="decision-insight-label">Research insight</div>
+      <div class="decision-insight">Operators often recognised problematic routes only after issues repeated for weeks. Long-term patterns are invisible in day-to-day operations.</div>
+      <div class="decision-result">→ Weekly summary of consistently high-risk routes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE DEMO -->
+<div class="demo-section">
+  <div class="demo-inner">
+    <div class="demo-eyebrow">Proof of Concept</div>
+    <div class="demo-title">The live prototype</div>
+    <div class="demo-sub">Built to test the concept end to end — route intelligence, weather signals, risk scoring, and departure recommendations in a single operational dashboard. This is real data, not a mockup.</div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot" style="background:#ff5f57;"></div>
+          <div class="browser-dot" style="background:#febc2e;"></div>
+          <div class="browser-dot" style="background:#28c840;"></div>
+        </div>
+        <div class="browser-url">commute-intelligence.vercel.app</div>
+      </div>
+      <iframe
+        class="browser-frame"
+        src="https://commute-intelligence.vercel.app/"
+        title="RouteIQ – Commute Intelligence POC"
+        loading="lazy"
+        allow="same-origin"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- REFLECTION -->
+<div class="reflection-section">
+  <div class="reflection-inner">
+    <div class="section-eyebrow">Closing Reflection</div>
+    <div class="section-title" style="max-width: 560px;">What this project taught me about assumptions</div>
+    <div class="reflection-grid">
+      <div class="reflection-card">
+        <div class="reflection-title">Workarounds are the signal</div>
+        <div class="reflection-body">The buffer wasn't inefficiency — it was a coping mechanism. When users build their own solutions, that behaviour tells you more than any complaint could. Follow the workaround.</div>
+      </div>
+      <div class="reflection-card">
+        <div class="reflection-title">Reframe before you build</div>
+        <div class="reflection-body">The right problem here was never traffic delays. It was the inability to predict them. Solving the wrong problem efficiently is still solving the wrong problem.</div>
+      </div>
+      <div class="reflection-card">
+        <div class="reflection-title">Adoption lives in existing habits</div>
+        <div class="reflection-body">Every operator used WhatsApp. Designing around that wasn't a compromise — it was the whole point. Fit the tool to the workflow, not the other way around.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="case-footer">
+  <a href="index.html" class="footer-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+    Back to all projects
+  </a>
+  <a href="#" class="footer-next">
+   
+  </a>
+</div>
+
+<script>
+  // Scroll-triggered reveals
+  const revealEls = document.querySelectorAll('.pattern-item, .decision-card, .chain-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        // stagger within groups
+        const siblings = [...e.target.parentElement.children].filter(el =>
+          el.classList.contains(e.target.classList[0])
+        );
+        const idx = siblings.indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), idx * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
